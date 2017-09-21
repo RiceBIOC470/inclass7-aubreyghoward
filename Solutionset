@@ -1,0 +1,63 @@
+%Inclass assignment 7. 
+% 1. The gene Cdx2 is a crucial transcription factor involved in number of
+% developmental stages. Use the UCSC genome browser to answer the following questions
+% about it:
+
+% A. What human chromosome is it located on?
+        %Chromosome 13
+% B. How many exons does it have?
+        % 3 exons
+% C. What is the precise position of its stop codon in the genome?
+        % 27,963,117
+
+% D. Identify at least one difference in sequence between human and mouse
+% CDX2.
+        %there is P309S change between Humans and Mouse CDX2
+
+% E. In which human tissues is it expressed most abundantly?
+        %CDX2 is significantly expressed in the colon, small intestine, and pancrease. 
+clear all
+%2. A. Use the unigene database to find the accession number for a genbank
+% entry containing the complete coding sequence of Cdx2. 
+        % Hs.174249
+% B. Use MATLAB to read the genbank information corresponding to that
+% accession number. 
+genbank_dat = getgenbank('NM_001265.4');
+% C. Use the information read in to find the position of the start and stop
+% codon within the sequence. What are the parts of the sequence before the start codon 
+% and after the stop codon?
+
+seq = 'atg';
+start = strfind(genbank_dat.Sequence,seq);
+q = 1;
+for ii = 1:length(start)
+if rem(start(ii),3) == 0
+    startcodon(q,1) = start(ii);
+    q = q+1;
+end
+end
+
+seq = 'tga';
+stop = strfind(genbank_dat.Sequence,seq);
+q = 1;
+for ii = 1:length(stop)
+if rem(stop(ii),3) == 0
+    stopcodon(q,1) = stop(ii);
+    q = q+1;
+end
+end
+stopcodon
+startcodon(1,1)
+stopcodon(1,1)
+
+%the regions of DNA beyond this part of the DNA is considered the UTR. 
+
+% D. Use the protein_id to read the information on the protein. Use the
+% information you read to determine where the homeobox domain of the protein is.
+% Hint: see the field "Features". 
+protein_dat = getgenpept(genbank_dat.CDS.protein_id)
+protein_dat.Features
+
+%the homeobox is upstream of the start codon from position 190-242 in the
+%sequence above. 
+
